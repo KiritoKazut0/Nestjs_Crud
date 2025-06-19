@@ -8,8 +8,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @Post()
   @UseGuards(JwtAuthGuard)
+  @Post()
   create(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.create(createTaskDto);
   }
