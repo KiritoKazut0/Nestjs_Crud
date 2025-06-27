@@ -2,7 +2,6 @@ import { IsNotEmpty, IsString, IsIn } from "class-validator";
 
 export class CreateTaskDto {
 
-
     @IsString()
     @IsNotEmpty()
     user_id: string
