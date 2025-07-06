@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsIn } from "class-validator";
+import { IsNotEmpty, IsString, IsIn, ValidateIf, IsUrl, Matches } from "class-validator";
 
 export class CreateTaskDto {
 
@@ -15,9 +15,14 @@ export class CreateTaskDto {
     @IsNotEmpty()
     descripcion: string;
 
+    @ValidateIf(o => o.image !== undefined && o.image !== '')
+    @IsUrl({}, {message: 'image must be a valid url'})
+    image: string
+
     @IsString()
     @IsIn(['pendiente', 'en progreso', 'completada', 'cancelada'])
     status: 'pendiente' | 'en progreso' | 'completada' | 'cancelada';
+
 }
 
 
