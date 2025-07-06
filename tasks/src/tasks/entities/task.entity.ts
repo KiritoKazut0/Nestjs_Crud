@@ -21,6 +21,9 @@ export class Task {
     @Column({ type: "varchar", nullable: false })
     descripcion: string
 
+    @Column({type: "varchar", nullable: false})
+    image: string
+
     @Column({
         type: "enum",
         enum: ['pendiente', 'en progreso', 'completada', 'cancelada'],

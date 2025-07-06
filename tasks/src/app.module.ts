@@ -9,7 +9,9 @@ import { UploadModule } from './upload/upload.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true,
+      envFilePath: ".env",
+      
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

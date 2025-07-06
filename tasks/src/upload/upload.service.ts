@@ -20,6 +20,7 @@ export class UploadService {
             throw new Error("Missing one or more AWS environment variables")
         }
 
+
         this.client = new S3Client({
             region: s3_region,
             credentials: {
@@ -30,16 +31,19 @@ export class UploadService {
             forcePathStyle: true
         });
 
+
+
     }
 
     async uploadFile({
         file, isPublic = true
     }: { file: Express.Multer.File, isPublic: boolean }): Promise<uploadFileResponseDto> {
         try {
+          
             const key = `${uuidv4()}`
             const command = new PutObjectCommand({
                 Bucket: this.bucketName,
-                Key: key,
+                Key: `images/${key}`,
                 Body: file.buffer,
                 ContentType: file.mimetype,
                 ACL: isPublic ? 'public-read' : 'private',
@@ -60,7 +64,6 @@ export class UploadService {
 
 
         } catch (error) {
-        
             throw new HttpException(
                 "Failed to upload file to S3. Please try again later.",
                 HttpStatus.INTERNAL_SERVER_ERROR
@@ -70,7 +73,7 @@ export class UploadService {
 
 
     async getFileUrl(key: string): Promise<{ url: string }> {
-        return { url: `https://${this.bucketName}.s3.amazonaws.com/${key}` };
+        return { url: `https://${this.bucketName}.s3.amazonaws.com/images/${key}` };
     }
 
 
