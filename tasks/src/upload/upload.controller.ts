@@ -9,17 +9,20 @@ import {
   ParseFilePipe
   , Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 
 import { UploadService } from './upload.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('upload')
 export class UploadController {
 
   constructor(private readonly uploadService: UploadService) { }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/images')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
@@ -42,16 +45,20 @@ export class UploadController {
     return this.uploadService.uploadFile({ file, isPublic: isPublicBool });
   }
 
+
+  @UseGuards(JwtAuthGuard)
   @Get(':key')
   async getFileUrl(@Param('key') key: string) {
     return this.uploadService.getFileUrl(key);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/signed-url/:key')
   async getSingedUrl(@Param('key') key: string) {
     return this.uploadService.getPresignedSignedUrl(key);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':key')
   async deleteFile(@Param('key') key: string) {
     return this.uploadService.deleteFile(key);
